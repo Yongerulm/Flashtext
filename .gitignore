@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+
+# Build artifacts
+.build/
+dist/
+*.dmg
+
+# Environment variables
+.env
+
+# Xcode
+*.xcuserstate
+*.xcuserdatad/
+xcuserdata/
+
+# IDE
+.idea/
+.vscode/
+
+# Swift Package Manager
+# Package.resolved should be committed for reproducible builds
+
+# Temporary files
+*.tmp
+*.temp
