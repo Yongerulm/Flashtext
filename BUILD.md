@@ -1,14 +1,36 @@
 # Build & Distribution Guide
 
-Diese Anleitung beschreibt, wie du Flashtext als signierte und notarisierte DMG verpackst, die sofort nach dem Download funktioniert.
+Diese Anleitung beschreibt, wie du Flashtext als DMG verpackst. Wir bieten zwei Varianten an:
 
-## Voraussetzungen
+- **Unsigned** (`build-dmg-unsigned.sh`): Ohne Apple Developer Account, kostenlos. Benutzer muessen beim ersten Start Rechtsklick → Oeffnen waehlen.
+- **Signed & Notarized** (`build-dmg-signed.sh`): Mit Apple Developer Account ($99/Jahr). Laueft ohne Gatekeeper-Warnung.
+
+---
+
+## Option A: Unsigned DMG (Schnell & Kostenlos)
+
+Kein Apple Developer Account noetig.
+
+```bash
+chmod +x build-dmg-unsigned.sh
+./build-dmg-unsigned.sh
+```
+
+Das Skript erstellt `dist/Flashtext-unsigned.dmg`.
+
+**Hinweis fuer Benutzer:** Da die App nicht mit einer Apple Developer ID signiert ist, erscheint beim ersten Start eine Gatekeeper-Warnung. Die App kann dann ueber Rechtsklick → Oeffnen gestartet werden.
+
+---
+
+## Option B: Signed & Notarized DMG (Professionell)
+
+### Voraussetzungen
 
 - Apple Developer Account ($99/Jahr)
 - macOS mit Xcode Command Line Tools
 - Homebrew
 
-## Schritt 1: Apple Developer ID Zertifikat erstellen
+### Schritt 1: Apple Developer ID Zertifikat erstellen
 
 1. Melde dich bei [developer.apple.com](https://developer.apple.com) an
 2. Gehe zu **Certificates, IDs & Profiles** → **Certificates**
@@ -49,11 +71,11 @@ APPLE_APP_SPECIFIC_PASSWORD=xxxx-xxxx-xxxx-xxxx
 
 **Wichtig:** Füge `.env` zu deiner `.gitignore` hinzu!
 
-## Schritt 4: Build-Skript ausführen
+## Schritt 4: Signed Build-Skript ausführen
 
 ```bash
-chmod +x build-dmg.sh
-./build-dmg.sh
+chmod +x build-dmg-signed.sh
+./build-dmg-signed.sh
 ```
 
 Das Skript führt automatisch aus:

@@ -47,7 +47,8 @@ High-performance voice-to-text for macOS. Speak naturally and Flashtext transcri
 4. Grant **Accessibility** permission when prompted (System Settings > Privacy & Security > Accessibility)
 5. Enter your **OpenAI API key** in Settings
 
-The DMG is code-signed and notarized by Apple, so it runs without Gatekeeper warnings.
+For the signed version: The DMG is code-signed and notarized by Apple, so it runs without Gatekeeper warnings.
+For the unsigned version: Users must right-click → Open the app on first launch (Gatekeeper warning).
 
 ## Setup
 
@@ -142,13 +143,30 @@ open Package.swift
 
 ## Build & Distribution
 
-### Prerequisites for Distribution
+We provide two build options:
 
-- Apple Developer Account ($99/year)
+### Option A: Unsigned DMG (Quick & Free)
+
+No Apple Developer Account required. Users must right-click → Open on first launch.
+
+```bash
+chmod +x build-dmg-unsigned.sh
+./build-dmg-unsigned.sh
+```
+
+**Output:** `dist/Flashtext-unsigned.dmg`
+
+### Option B: Signed & Notarized DMG (Professional)
+
+Requires Apple Developer Account ($99/year). Runs without Gatekeeper warnings.
+
+#### Prerequisites
+
+- Apple Developer Account
 - Developer ID Application certificate
 - App-specific password for notarization
 
-### Step 1: Apple Developer Setup
+#### Step 1: Apple Developer Setup
 
 1. Log in to [developer.apple.com](https://developer.apple.com)
 2. Go to **Certificates, IDs & Profiles** → **Certificates**
@@ -159,13 +177,13 @@ open Package.swift
    security find-identity -p codesigning -v
    ```
 
-### Step 2: App-Specific Password
+#### Step 2: App-Specific Password
 
 1. Go to [appleid.apple.com](https://appleid.apple.com)
 2. Generate an app-specific password (e.g., "Flashtext Notarization")
 3. Save the password securely (shown only once)
 
-### Step 3: Configure Environment
+#### Step 3: Configure Environment
 
 Create a `.env` file in the project root:
 
@@ -183,11 +201,11 @@ APPLE_APP_SPECIFIC_PASSWORD=xxxx-xxxx-xxxx-xxxx
 
 **Important:** `.env` is already in `.gitignore` and will never be committed.
 
-### Step 4: Build the DMG
+#### Step 4: Build the Signed DMG
 
 ```bash
-chmod +x build-dmg.sh
-./build-dmg.sh
+chmod +x build-dmg-signed.sh
+./build-dmg-signed.sh
 ```
 
 This script will:
@@ -198,9 +216,9 @@ This script will:
 5. Submit to Apple for notarization
 6. Staple the notarization ticket
 
-The final DMG will be in `dist/Flashtext.dmg`.
+**Output:** `dist/Flashtext.dmg`
 
-### Step 5: Validate
+#### Step 5: Validate
 
 ```bash
 spctl -a -t open --context context:primary-signature -v dist/Flashtext.dmg
@@ -248,7 +266,8 @@ Flashtext/
 ├── BUILD.md                        # Detailed build instructions
 ├── Package.swift                   # Swift Package Manager manifest
 ├── README.md                       # This file
-├── build-dmg.sh                    # Automated build & notarization script
+├── build-dmg-signed.sh             # Signed & notarized DMG build
+├── build-dmg-unsigned.sh           # Unsigned DMG build (no Apple Dev ID needed)
 ├── project.yml                     # XcodeGen project configuration
 └── setup-project.sh                # Initial project setup script
 ```
