@@ -16,6 +16,7 @@ struct ModeSelectorView: View {
                     ModeButton(mode: mode, isSelected: appState.currentMode == mode) {
                         withAnimation(.spring(response: 0.3)) {
                             appState.currentMode = mode
+                            appState.settings.defaultMode = mode
                         }
                     }
                 }

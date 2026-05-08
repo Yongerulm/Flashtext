@@ -37,6 +37,7 @@ final class AppState: ObservableObject {
     private var levelTimer: Timer?
     private var pendingStop = false
     private var shortcutCancellable: AnyCancellable?
+    private var modeCancellable: AnyCancellable?
 
     private var historyFileURL: URL {
         FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
@@ -58,6 +59,14 @@ final class AppState: ObservableObject {
                 print("[AppState] Shortcut changed to \(newShortcut.displayName), restarting PTT service")
                 self?.pttService.setShortcut(newShortcut)
                 self?.pttService.restart()
+            }
+
+        // Sync currentMode when defaultMode changes in Settings
+        modeCancellable = settings.$defaultMode
+            .dropFirst()
+            .sink { [weak self] newMode in
+                print("[AppState] Mode changed to \(newMode.displayName)")
+                self?.currentMode = newMode
             }
     }
 
